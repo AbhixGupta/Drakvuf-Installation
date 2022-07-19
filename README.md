@@ -16,7 +16,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 ```
 
 ```bash
-  d ~
+  cd ~
   git clone https://github.com/tklengyel/drakvuf
   cd drakvuf
   git submodule update --init
