@@ -11,7 +11,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ## Installation
 
-### Operating System Configuration
+## Operating System Configuration
 
 - Before installing the drakvuf you have to make partition in the system for the LVM and system space.
 
@@ -37,7 +37,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ![Installation](/images/6.png)
 
-### Dependencies and Pakages Installation
+## Dependencies and Pakages Installation
 
 These commands works fine with Debian based linux distro. We have used the Ubunut 20.04 Focal Fossa operting system. First isnstall the required dependencies.
 
@@ -104,13 +104,13 @@ Update the changes in the Grub and reboot the system.
   reboot
 ```
 
-Verify the XEN installation. The output will show the "Running in PV context on Xen" message on the screen
+Verify the XEN installation. The output will show the "Running in PV context on Xen v4.7" message on the screen
 
 ```
   sudo xen-detect
 ```
 
-This command will list the running V>
+This command will list the running VM.
 
 ```bash
   sudo xl list
@@ -118,16 +118,17 @@ This command will list the running V>
 
 The output should have to be similar to this.
 
-````bash
-Name                                        ID   Mem    VCPUs 	State	 Time(s)
+```bash
+Name                                        ID   Mem    VCPUs 	 State	 Time(s)
 Domain-0                                       0  4096     2       r-----    614.0
+```
 
 ```bash
   sudo apt-get install lvm2 -y
   pvcreate /dev/sda2
   vgcreate vg /dev/sda2
   lvcreate -L110G -n windows7-sp1 vg
-````
+```
 
 Now Install the VMM utility from the ubuntu software software
 
