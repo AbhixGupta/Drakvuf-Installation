@@ -361,6 +361,8 @@ Domain-0                                     0  4024     4     r-----     848.8
 windows7-sp1-x86                             7  3000     1     -b----      94.7
 ```
 
+Get the debug information.
+
 ```bash
   $ sudo vmi-win-guid name windows7-sp1-x86
   Windows Kernel found @ 0x2604000
