@@ -11,9 +11,16 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ## Installation
 
-Before installing the drafvuf you have to make partition in the for the LVM and system.
+- Before installing the drakvuf you have to make partition in the system for the LVM and system space.
+
 ![Installation](/images/1.png)
+
+Make sure to check the all boxes as pe the below image before proceeding furthur. However it not mandatory but still it helps to install the latest verison of software.
+
 ![Installation](/images/2.png)
+
+In Installation type, select the Something else.
+
 ![Installation](/images/3.png)
 ![Installation](/images/4.png)
 ![Installation](/images/5.png)
