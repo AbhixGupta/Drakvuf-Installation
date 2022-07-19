@@ -11,7 +11,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ## Installation
 
-### Operating System
+### Operating System Configuration
 
 - Before installing the drakvuf you have to make partition in the system for the LVM and system space.
 
@@ -37,6 +37,8 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ![Installation](/images/6.png)
 
+### Depencies and Pakages Installation
+
 These commands works fine with Debian based linux distro. We have used the Ubunut 20.04 Focal Fossa operting system. First isnstall the required dependencies.
 
 ```bash
@@ -48,6 +50,8 @@ pip3 command is used to install those dependency pakages which old and cannot be
 ```bash
   sudo pip3 install pefile construct
 ```
+
+Cloning the Drakvuf directory from the official Github Repository.
 
 ```bash
   cd ~
@@ -61,6 +65,8 @@ pip3 command is used to install those dependency pakages which old and cannot be
   make -j4 dist-tools
   make -j4 debball
 ```
+
+Now we have to install Xen with dom0 getting 4GB RAM assigned and two dedicated CPU cores. You can modify these configuration according to your need. At last update the Grub and reboot the system.
 
 ```bash
   sudo su
@@ -76,8 +82,24 @@ pip3 command is used to install those dependency pakages which old and cannot be
   systemctl enable xen-init-dom0.service
   systemctl enable xenconsoled.service
   update-grub
+```
+
+Note: Make sure that you are running a relatively recent kernel. In Ubuntu 20.04 the 5.10.0-1019-oem kernel has been verified to work, anything newer would also work. Older kernels in your dom0 will not work properly.
+
+```bash
   uname -r
-  cd /etc/grub.d/;mv 20_linux_xen 09_linux_xen
+```
+
+After above step make the XEN to boot before the linux kernal.
+
+```bash
+  cd /etc/grub.d/;
+  mv 20_linux_xen 09_linux_xen
+```
+
+Update the changes in the Grub and reboot the system.
+
+```bash
   update-grub
   reboot
 ```
