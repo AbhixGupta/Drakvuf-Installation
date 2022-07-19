@@ -120,7 +120,7 @@ The output should have to be similar to this.
 
 ````bash
   Name                                        ID   Mem    VCPUs 	State	 Time(s)
-Domain-0                                       0  4096     2      r-----   614.0
+Domain-0                                       0  4096     2        r-----    614.0
 
 ```bash
   sudo apt-get install lvm2 -y
