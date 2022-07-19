@@ -119,7 +119,7 @@ This command will list the running V>
 The output should have to be similar to this.
 
 ````bash
-  Name                                        ID   Mem    VCPUs 	State	 Time(s)
+Name                                        ID   Mem    VCPUs 	State	 Time(s)
 Domain-0                                       0  4096     2       r-----    614.0
 
 ```bash
