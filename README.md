@@ -1,8 +1,8 @@
 # About
-This repository contains the installation procedure of the Drakvuf, A VMI based black-box malware analysis tool.
 
+This repository contains the installation procedure of the Drakvuf, A VMI based black-box malware analysis tool. Drakvuf allows the execution of the malware binaries without using any third party tools. It uses the XEN Hypervisor which is installed in the DOM0 environment and Analysis part of the malware is done in the DOM1, DOM2 and so on.
 
-# Drakvuf Installation 
+# Drakvuf Installation
 
 Drakvuf is a black box binary dynamic malware analysis tool. It works on the principle of the VMI (Virtual Machine Introspection).
 
@@ -10,6 +10,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 2. While Installating the ubuntu make at least 200 GB space free for LVM group.
 
 ## Installation
+
 ```bash
   sudo apt-get install wget git bcc bin86 gawk bridge-utils iproute2 libcurl4-openssl-dev bzip2 libpci-dev build-essential make gcc clang libc6-dev linux-libc-dev zlib1g-dev libncurses5-dev patch libvncserver-dev libssl-dev libsdl-dev iasl libbz2-dev e2fslibs-dev git-core uuid-dev ocaml libx11-dev bison flex ocaml-findlib xz-utils gettext libyajl-dev libpixman-1-dev libaio-dev libfdt-dev cabextract libglib2.0-dev autoconf automake libtool libjson-c-dev libfuse-dev liblzma-dev autoconf-archive kpartx python3-dev python3-pip golang python-dev libsystemd-dev nasm -y
   sudo pip3 install pefile construct
@@ -62,10 +63,12 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 Now Install the VMM utility from the ubuntu software software
 
 Now install the networking tool.
+
 ```bash
   $sudo apt-get install bridge-utils
   $sudo nano /etc/network/interfaces      //open the interface file
 ```
+
 Copy the following text and paste it in the interfaces files.
 
 ```bash
@@ -74,11 +77,12 @@ Copy the following text and paste it in the interfaces files.
 
   auto enp1s0
   iface enp1s0 inet manual
-  
+
   auto virbr0
   iface virbr0 inet dhcp
        bridge_ports enp1s0
 ```
+
 Note: Change according to your network interface (run “ifconfig”).
 
 ```bash
@@ -86,6 +90,7 @@ Note: Change according to your network interface (run “ifconfig”).
 ```
 
 Now turn on the network bridge service.
+
 ```bash
   $sudo gedit /etc/NetworkManager/NetworkManager.conf
   manages = true  //make true from false
@@ -93,14 +98,15 @@ Now turn on the network bridge service.
 ```
 
 To show network Vm interfaces.
+
 ```bash
   brctl show
 ```
 
 #### Download link for windows 7 iso: [Click Here](https://drive.google.com/drive/folders/1dWSDHGIdmVdWbnbU3AfEzrsPCRPaCxam)
 
-
 Next step is to edit the xen VM's configuration file.
+
 ```bash
   $ sudo gedit /etc/xen/win7.cfg
 ```
@@ -131,8 +137,8 @@ Next step is to edit the xen VM's configuration file.
   vif = [ 'type=ioemu,model=e1000,bridge=virbr0,mac=48:9e:bd:9e:2b:0d']
   disk = [ 'phy:/dev/vg/windows7-sp1,hda,w', 'file:/home/pc-1/Downloads/windows7.iso,hdc:cdrom,r' ]
 ```
-Note: Make changes according to your file path of windows iso image and mac address
 
+Note: Make changes according to your file path of windows iso image and mac address
 
 ```bash
   cd ~/drakvuf/libvmi
@@ -158,40 +164,47 @@ Note: Make changes according to your file path of windows iso image and mac addr
 ```
 
 In order to login into the virtula machine which you have created, you first have to install the "gvncviewer".
+
 ```bash
   sudo apt install gvncviewer
 ```
+
 Now login to Virtual Machine and install the windows with giving it login password.
+
 ```bash
   gvncviewer localhost
 ```
 
 When the Windows Installation is finished, follow the following step.
+
 1. Create a partition of 50G. (A seperate Disk drive)
 2. Turn all the firewall off.
-3. Create a restore point using the newely created partitoin (new drive)  // Serach for “create a restore point” in windows start menu.
+3. Create a restore point using the newely created partitoin (new drive) // Serach for “create a restore point” in windows start menu.
 
 ```bash
   sudo vmi-win-guid name windows7-sp1
 ```
+
 Note: If found error create run the following commands.
+
 ```bash
-  sudo /sbin/ldconfig -v 
+  sudo /sbin/ldconfig -v
 ```
+
 Copy the following string from the terminal output
+
 ```bash
   PDB GUID: f794d83b0f3c4b7980797437dc4be9e71
 	Kernel filename: ntkrnlmp.pdb
 ```
 
-
 Now run the following commands from the by changing the paramater accordingly.
+
 ```bash
 cd /tmp
   python3 ~/drakvuf/volatility3/volatility/framework/symbols/windows/pdbconv.py --guid f794d83b0f3c4b7980797437dc4be9e71 -p ntkrnlmp.pdb -o windows7-sp1.json
   sudo mv windows7-sp1.json /root
 ```
-
 
 ```bash
   sudo su
@@ -200,6 +213,7 @@ cd /tmp
 ```
 
 Now build the drakvuf using the following commands
+
 ```bash
   cd ~/drakvuf
   autoreconf -vi
@@ -208,22 +222,27 @@ Now build the drakvuf using the following commands
 ```
 
 Now run the following to get the PID's of the processes.
+
 ```bash
   sudo vmi-process-list windows7-sp1
 ```
 
 #### Tracing Commands
 
-* System tracing:
+- System tracing:
+
 ```bash
   sudo ./src/drakvuf -r /root/windows7-sp1.json -d id
 ```
+
 Here, id of virtual machine (use sudo xl list command)
 
-* Malware Tracing Command
+- Malware Tracing Command
+
 ```bash
   sudo ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” > zbot_1.txt
 ```
+
 Here,
 
 1300 = change according to pid of explorer.exe
@@ -231,8 +250,8 @@ Here,
 “E:\\zbot\\zbot_1.exe”= Location of malware ".exe" file in the created windows VM.
 zbot_1.txt= Location of the output file. By default is drakvuf location.
 
+- Network Tracing
 
-* Network Tracing
 ```bash
   ping -n 10000 www.google.com  (from cmd of VM)
   sudo tcpdump -w "zbot_1.pcap" -i vif1.0-emu   (can be obtained from brctl show)
@@ -241,43 +260,49 @@ zbot_1.txt= Location of the output file. By default is drakvuf location.
 #### Other Commmands
 
 Xen version:
+
 ```bash
   sudo xen-detect
 ```
 
 List of VMs:
+
 ```bash
   sudo xl list
 ```
 
 Destroy VM:
+
 ```bash
   sudo xl destroy id
 ```
 
 VM boot:
+
 ```bash
   gvncviewer localhost
 ```
 
-
 CREATE VM:
+
 ```bash
   sudo xl create /etc/xen/win7.cfg
 ```
 
 Windows json file:
+
 ```bash
   sudo vmi-win-guid name windows7-sp1
 ```
 
-
 VMI process list:
+
 ```bash
   sudo vmi-process-list windows7-sp1
 ```
 
 Enabling the debug:
+
 ```bash
   make clean
   ./configure --enable-debug
@@ -285,9 +310,11 @@ Enabling the debug:
 ```
 
 Debug output: (With process injection)
+
 ```bash
 sudo ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” -v 1> zbot_1.txt
 ```
+
 Note: Retype all the quotes from the keyboard in the terminal before running the command
 Here,
 
