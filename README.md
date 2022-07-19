@@ -123,12 +123,35 @@ Name                                        ID   Mem    VCPUs 	 State	 Time(s)
 Domain-0                                       0  4096     2       r-----    614.0
 ```
 
+## LVM Group COnfiguration
+
+First install the lvm2
+
 ```bash
   sudo apt-get install lvm2 -y
+```
+
+Note: Before creating physical volume (PV), Go inside Disk partition and create a volume. Never give the whole path of disk like /dev/sda otherwise your os will be crashed down. So when you will create a volume then it has named like /dev/sd2 or /dev/sd3 and so on. So pick only a free volume then move ahead.
+
+Create physical volume. Hera "sda" is disk volume, it can vary accordingly.
+
+```bash
   pvcreate /dev/sda2
+```
+
+Create one volume Group.
+
+```bash
   vgcreate vg /dev/sda2
+```
+
+Create logical volume group. You can specify the size, here we allocating 110 GB space, you can change it by altering the the size of '110'.
+
+```bash
   lvcreate -L110G -n windows7-sp1 vg
 ```
+
+## Install the VMM Utility tool And NetWorking tool.
 
 Now Install the VMM utility from the ubuntu software software
 
