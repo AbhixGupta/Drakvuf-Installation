@@ -12,12 +12,11 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 ## Installation
 
 Before installing the drafvuf you have to make partition in the for the LVM and system.
-![Installation](/image/1.png)
-![Installation](/image/2.png)
-![Installation](/image/3.png)
-![Installation](/image/4.png)
-![Installation](/image/5.png)
-![Installation](/image/6.png)
+[Installation](/image/1.png)
+[Installation](/image/2.png)
+[Installation](/image/3.png)
+[Installation](/image/4.png)
+[Installation](/image/5.png)
 
 ```bash
   sudo apt-get install wget git bcc bin86 gawk bridge-utils iproute2 libcurl4-openssl-dev bzip2 libpci-dev build-essential make gcc clang libc6-dev linux-libc-dev zlib1g-dev libncurses5-dev patch libvncserver-dev libssl-dev libsdl-dev iasl libbz2-dev e2fslibs-dev git-core uuid-dev ocaml libx11-dev bison flex ocaml-findlib xz-utils gettext libyajl-dev libpixman-1-dev libaio-dev libfdt-dev cabextract libglib2.0-dev autoconf automake libtool libjson-c-dev libfuse-dev liblzma-dev autoconf-archive kpartx python3-dev python3-pip golang python-dev libsystemd-dev nasm -y
