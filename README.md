@@ -15,15 +15,24 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ![Installation](/images/1.png)
 
-Make sure to check the all boxes as pe the below image before proceeding furthur. However it not mandatory but still it helps to install the latest verison of software.
+- Make sure to check the all boxes as pe the below image before proceeding furthur. However it not mandatory but still it helps to install the latest verison of software.
 
 ![Installation](/images/2.png)
 
-In Installation type, select the Something else.
+- In Installation type, select the Something else.
 
 ![Installation](/images/3.png)
+
+- If you already have some installed lvm partition you run the following command to delete it.
+
 ![Installation](/images/4.png)
+
+- Now create the swap space, efi space and the main system space for DOM0 XEN installation.
+
 ![Installation](/images/5.png)
+
+- Click on the Install button.
+
 ![Installation](/images/6.png)
 
 ```bash
