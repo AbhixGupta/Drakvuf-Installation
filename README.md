@@ -37,7 +37,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ![Installation](/images/6.png)
 
-## Dependencies and Pakages Installation
+## Dependencies and Packages Installation
 
 These commands works fine with Debian based linux distro. We have used the Ubunut 20.04 Focal Fossa operting system. First isnstall the required dependencies.
 
@@ -50,6 +50,8 @@ pip3 command is used to install those dependency pakages which old and cannot be
 ```bash
   sudo pip3 install pefile construct
 ```
+
+## Cloning of Drakvuf from Official repository
 
 Cloning the Drakvuf directory from the official Github Repository.
 
@@ -65,6 +67,8 @@ Cloning the Drakvuf directory from the official Github Repository.
   make -j4 dist-tools
   make -j4 debball
 ```
+
+## XEN Installation
 
 Now we have to install Xen with dom0 getting 4GB RAM assigned and two dedicated CPU cores. You can modify these configuration according to your need. At last update the Grub and reboot the system.
 
