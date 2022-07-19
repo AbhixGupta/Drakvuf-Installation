@@ -350,7 +350,7 @@ Rekall Installation.
   sudo python setup.py install
 ```
 
-## Create VM and Open from DOM0
+## Create VM and Configure VM from DOM0
 
 Last step of this configuration is to create Windows 7 VM using the following command.
 
