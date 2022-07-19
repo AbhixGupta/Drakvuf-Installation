@@ -157,10 +157,35 @@ Now Install the VMM utility from the ubuntu software software
 
 Now install the networking tool.
 
+Next we need to set up our system so that we can attach virtual machines to the external network. This is done by creating a virtual switch within dom0. The switch will take packets from the virtual machines and forward them on to the physical network so they can see the internet and other machines on your network.
+
+The piece of software we use to do this is called the Linux bridge and its core components reside inside the Linux kernel. In this case, the bridge acts as our virtual switch. The Debian kernel is compiled with the Linux bridging module so all we need to do is install the control utilities:
+
 ```bash
   $sudo apt-get install bridge-utils
+```
+
+Management of the bridge is usually done using the brctl command. The initial setup for our Xen bridge, though, is a "set it once and forget it" kind of thing, so we are instead going to configure our bridge through Debian’s networking infrastructure. It can be configured via /etc/network/interfaces.
+
+Open this file with the editor of your choice. If you selected a minimal installation, the nano text editor should already be installed. Open the file:
+
+Note: nano is a text file editor for linux. You can also use the vi, vim editor also. If command show error then run "sudo apt install nano -y"
+
+```bash
   $sudo nano /etc/network/interfaces      //open the interface file
 ```
+
+This file is very simple. Each stanza represents a single interface.
+
+Breaking it down,
+
+1. “auto eth0” meeans that eth0 will be configured when ifup -a is run (which happens at boot time). This means that the interface will automatically be started/stopped for you. ("eth0 is its traditional name - you'll probably see something more current like "ens1", "en0sp2" or even "enx78e7d1ea46da")
+
+2. “iface eth0” then describes the interface itself. In this case, it specifies that it should be configured by DHCP - we are going to assume that you have DHCP running on your network for this guide. If you are using static addressing you probably know how to set that up.
+
+We are going to edit this file so it resembles such:
+
+Note: Change according to your network interface (run “ifconfig”).
 
 Copy the following text and paste it in the interfaces files.
 
@@ -176,7 +201,9 @@ Copy the following text and paste it in the interfaces files.
        bridge_ports enp1s0
 ```
 
-Note: Change according to your network interface (run “ifconfig”).
+Make sure to add the bridge stanza, be sure to change dhcp to manual in the iface eth0 inet manual line, so that IP (Layer 3) is assigned to the bridge, not the interface. The interface will provide the physical and data-link layers (Layers 1 & 2) only.
+
+Restart the Networking service.
 
 ```bash
   sudo service network-manager restart
@@ -196,13 +223,29 @@ To show network Vm interfaces.
   brctl show
 ```
 
-#### Download link for windows 7 iso: [Click Here](https://drive.google.com/drive/folders/1dWSDHGIdmVdWbnbU3AfEzrsPCRPaCxam)
+The output will show something like this.
+
+```bash
+  bridge name     bridge id               STP enabled     interfaces
+  xenbr0          8000.4ccc6ad1847d       no              enp2s0
+```
+
+The networking service can now be set to start automatically whenever the system is rebooted. Please review the installation instructions once again if you are having trouble getting this type of output.
+
+## Download link for windows 7 iso:
+
+Before proceeding furthur we need 64-bit windows 7 iso image. You can download from anywhere or can find the already tested image from [Here](https://drive.google.com/drive/folders/1dWSDHGIdmVdWbnbU3AfEzrsPCRPaCxam).
+
+## Configure Windows File For VM
 
 Next step is to edit the xen VM's configuration file.
 
 ```bash
   $ sudo gedit /etc/xen/win7.cfg
 ```
+
+This template is used for creating the Configurtion for Windows 7 VM from the download ISO file. You can modify the number of cpu, max memory, VM behaviour and other system tuning.
+s
 
 ```bash
   rch = 'x86_64'
@@ -231,15 +274,55 @@ Next step is to edit the xen VM's configuration file.
   disk = [ 'phy:/dev/vg/windows7-sp1,hda,w', 'file:/home/pc-1/Downloads/windows7.iso,hdc:cdrom,r' ]
 ```
 
-Note: Make changes according to your file path of windows iso image and mac address
+Note: Make changes according to your file path of windows iso image and mac address.
+
+Now, Enter into the LibVMI folder and build it.
 
 ```bash
   cd ~/drakvuf/libvmi
   autoreconf -vif
   ./configure --disable-kvm --disable-bareflank --disable-file
+```
+
+Output of the above command should look something this:
+
+```bash
+  Feature         | Option
+----------------|---------------------------
+Xen Support     | --enable-xen=yes
+KVM Support     | --enable-kvm=no
+File Support    | --enable-file=yes
+Shm-snapshot    | --enable-shm-snapshot=no
+Rekall profiles | --enable-rekall-profiles=yes
+----------------|---------------------------
+
+OS              | Option
+----------------|---------------------------
+Windows         | --enable-windows=yes
+Linux           | --enable-linux=yes
+
+
+Tools           | Option                    | Reason
+----------------|---------------------------|----------------------------
+Examples        | --enable-examples=yes
+VMIFS           | --enable-vmifs=yes        | yes
+```
+
+Build and install LibVMI
+
+```bash
   make
   sudo make install
   sudo echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> ~/.bashrc
+```
+
+Other commands to run:
+
+```bash
+  cd ~/drakvuf/libvmi
+  ./autogen.sh
+  ./configure –disable-kvm
+  sudo xl list
 ```
 
 ```bash
@@ -248,37 +331,77 @@ Note: Make changes according to your file path of windows iso image and mac addr
   sudo python3 ./setup.py install
 ```
 
+Rekall Installation.
+
 ```bash
-  cd ~/drakvuf/libvmi
-  ./autogen.sh
-  ./configure –disable-kvm
-  sudo xl list
-  sudo xl create /etc/xen/win7.cfg
+  cd ~/drakvuf/rekall/rekall-core
+  sudo pip install setuptools
+  python setup.py build
+  sudo python setup.py install
 ```
 
-In order to login into the virtula machine which you have created, you first have to install the "gvncviewer".
+Last step of this configuration is to create Windows 7 VM using the following command.
+
+```bash
+  xl create /etc/xen/win7.cfg
+```
+
+In order to login into the virtual machine you have created, you first have to install the "gvncviewer".
 
 ```bash
   sudo apt install gvncviewer
 ```
 
-Now login to Virtual Machine and install the windows with giving it login password.
+Now we will create the JSON configuration file for the Windows domain. First, we need to get the debug information for the Windows kernel via the LibVMI vmi-win-guid tool. For example, in the following my domain is named windows7-sp1.
 
 ```bash
-  gvncviewer localhost
+  $ sudo xl list
+Name                                        ID   Mem VCPUs	State	Time(s)
+Domain-0                                     0  4024     4     r-----     848.8
+windows7-sp1-x86                             7  3000     1     -b----      94.7
 ```
-
-When the Windows Installation is finished, follow the following step.
-
-1. Create a partition of 50G. (A seperate Disk drive)
-2. Turn all the firewall off.
-3. Create a restore point using the newely created partitoin (new drive) // Serach for “create a restore point” in windows start menu.
 
 ```bash
-  sudo vmi-win-guid name windows7-sp1
+  $ sudo vmi-win-guid name windows7-sp1-x86
+  Windows Kernel found @ 0x2604000
+    Version: 32-bit Windows 7
+    PE GUID: 4ce78a09412000
+    PDB GUID: 684da42a30cc450f81c535b4d18944b12
+    Kernel filename: ntkrpamp.pdb
+    Multi-processor with PAE (version 5.0 and higher)
+    Signature: 17744.
+    Machine: 332.
+    # of sections: 22.
+     # of symbols: 0.
+    Timestamp: 1290242569.
+    Characteristics: 290.
+    Optional header size: 224.
+    Optional header type: 0x10b
+    Section 1: .text
+    Section 2: _PAGELK
+    Section 3: POOLMI
+    Section 4: POOLCODE
+    Section 5: .data
+    Section 6: ALMOSTRO
+    Section 7: SPINLOCK
+    Section 8: PAGE
+    Section 9: PAGELK
+    Section 10: PAGEKD
+    Section 11: PAGEVRFY
+    Section 12: PAGEHDLS
+    Section 13: PAGEBGFX
+    Section 14: PAGEVRFB
+    Section 15: .edata
+    Section 16: PAGEDATA
+    Section 17: PAGEKDD
+    Section 18: PAGEVRFC
+    Section 19: PAGEVRFD
+    Section 20: INIT
+    Section 21: .rsrc
+    Section 22: .reloc
 ```
 
-Note: If found error create run the following commands.
+Note: If found error in running the above commands, run following command then rerun the above command.
 
 ```bash
   sudo /sbin/ldconfig -v
@@ -291,13 +414,15 @@ Copy the following string from the terminal output
 	Kernel filename: ntkrnlmp.pdb
 ```
 
-Now run the following commands from the by changing the paramater accordingly.
+Now generate the reakall profile.
 
 ```bash
 cd /tmp
   python3 ~/drakvuf/volatility3/volatility/framework/symbols/windows/pdbconv.py --guid f794d83b0f3c4b7980797437dc4be9e71 -p ntkrnlmp.pdb -o windows7-sp1.json
   sudo mv windows7-sp1.json /root
 ```
+
+Now run the following commands from the by changing the paramater accordingly to create LibVMI config with Rekall profile:
 
 ```bash
   sudo su
@@ -314,13 +439,25 @@ Now build the drakvuf using the following commands
   make
 ```
 
-Now run the following to get the PID's of the processes.
+Run the following to get the PID's of the processes.
 
 ```bash
   sudo vmi-process-list windows7-sp1
 ```
 
-#### Tracing Commands
+Now login to Virtual Machine and install the windows with giving it login password.
+
+```bash
+  gvncviewer localhost
+```
+
+When the Windows Installation is finished, follow the following step.
+
+1. Create a partition of 50G. (A seperate Disk drive)
+2. Turn all the firewall off.
+3. Create a restore point using the newely created partitoin (new drive) // Serach for “create a restore point” in windows start menu.
+
+## Tracing Commands
 
 - System tracing:
 
