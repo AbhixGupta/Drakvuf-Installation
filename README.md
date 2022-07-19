@@ -364,6 +364,8 @@ In order to login into the virtual machine you have created, you first have to i
   sudo apt install gvncviewer
 ```
 
+## JSON File Creation using LibVMI vmi-win-guid tool and Volatility Framework
+
 Now we will create the JSON configuration file for the Windows domain. First, we need to get the debug information for the Windows kernel via the LibVMI vmi-win-guid tool. For example, in the following my domain is named windows7-sp1.
 
 ```bash
@@ -471,7 +473,7 @@ When the Windows Installation is finished, follow the following step.
 2. Turn all the firewall off.
 3. Create a restore point using the newely created partitoin (new drive) // Serach for “create a restore point” in windows start menu.
 
-## Tracing Commands
+## Program Execution Tracing Log Generation using Drakvuf
 
 - System tracing:
 
