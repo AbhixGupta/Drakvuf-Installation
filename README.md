@@ -127,7 +127,7 @@ Name                                        ID   Mem    VCPUs 	 State	 Time(s)
 Domain-0                                       0  4096     2       r-----    614.0
 ```
 
-## LVM Group COnfiguration
+## Logical Volume Manager(LVM Setup and Installation)
 
 First install the lvm2
 
@@ -155,9 +155,11 @@ Create logical volume group. You can specify the size, here we allocating 110 GB
   lvcreate -L110G -n windows7-sp1 vg
 ```
 
-## Install the VMM Utility tool And NetWorking tool.
+## Install the VMM Utility tool And Networking tool.
 
 Now Install the VMM utility from the ubuntu software software
+
+## Newtworking Configuration
 
 Now install the networking tool.
 
@@ -240,7 +242,7 @@ The networking service can now be set to start automatically whenever the system
 
 Before proceeding furthur we need 64-bit windows 7 iso image. You can download from anywhere or can find the already tested image from [Here](https://drive.google.com/drive/folders/1dWSDHGIdmVdWbnbU3AfEzrsPCRPaCxam).
 
-## Configure Windows File For VM
+## VM Creation and Configuration
 
 Next step is to edit the xen VM's configuration file.
 
@@ -279,6 +281,8 @@ s
 ```
 
 Note: Make changes according to your file path of windows iso image and mac address.
+
+## Clone LibVMI and Installation
 
 Now, Enter into the LibVMI folder and build it.
 
@@ -329,6 +333,8 @@ Other commands to run:
   sudo xl list
 ```
 
+## Clone Volatility and Installation
+
 ```bash
   cd ~/drakvuf/volatility3
   python3 ./setup.py build
@@ -343,6 +349,8 @@ Rekall Installation.
   python setup.py build
   sudo python setup.py install
 ```
+
+## Create VM and Open from DOM0
 
 Last step of this configuration is to create Windows 7 VM using the following command.
 
