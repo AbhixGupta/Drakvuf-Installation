@@ -1,14 +1,4 @@
 #!/usr/bin/env bash
-  #sudo xl create /etc/xen/win7.cfg
-  #ID=$(sudo xl list | grep -oP '(?<=windows7-sp1)[^33]*')
-  #ID= echo ${ID%%*( )}
-  #echo "creating VM..."
-  #echo "creation done..."
-  #DISPLAY=:0 konsole --noclose -e bash -c "gvncviewer localhost"
-  #sudo gvncviewer localhost
-  #sleep 50
-  #sudo /bin/bash/env bash /home/pc03/Documents/Bash Scripts/runn.sh
-  #gnome-terminal -- /bin/sh -c 'sudo /bin/bash/env bash /home/pc03/Documents/Bash_Scripts/sample.sh'
 
 ID=$(sudo xl list | grep -oP '(?<=windows7-sp1)[^33]*' |  cut -c 34)
 ID= echo ${ID%%*( )}
@@ -35,19 +25,7 @@ for (( i=$upd; i<=1120; i++ ))
   	   echo "Error Present : $er"
   	   mv /home/pc2/Desktop/malware/logs_network/zeroaccess$i.pcap -i $var1 /home/pc2/Desktop/malware/logs_network/ne$i.pcap
   	   mv /home/pc2/Desktop/malware/logs_text/zeroaccess$i.txt /home/pc2/Desktop/malware/logs_text/ne$i.txt
-	
-  	 # elif [[ "$err" == "Domain is not running, failed to get domID from name!" ]]
-  	 
-  	 #then
-  	  # echo "Error Present : $er"
-  	   #rm /home/pc03/Desktop/logs/Malware/network/winwebsec$i.pcap
-  	   #rm /home/pc03/Desktop/logs/Malware/logs/winwebsec$i.txt
-     
-  	   #sudo xl destroy $ID
-  	   #echo "destroying..."
-     
-  	   #sudo xl create /etc/xen/win7.cfg
-  	   #echo "New VM is Created..."
+
   	fi
   	sleep 5
   	
