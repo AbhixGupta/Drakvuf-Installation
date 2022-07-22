@@ -445,7 +445,7 @@ Copy the following string from the terminal output
 	Kernel filename: ntkrnlmp.pdb
 ```
 
-Now generate the reakall profile.
+Now run the following commands from the by changing the paramater accordingly to create LibVMI config with Rekall profile:
 
 ```bash
 cd /tmp
@@ -453,7 +453,7 @@ cd /tmp
   sudo mv windows7-sp1.json /root
 ```
 
-Now run the following commands from the by changing the paramater accordingly to create LibVMI config with Rekall profile:
+Now generate the reakall profile.
 
 ```bash
   sudo su
