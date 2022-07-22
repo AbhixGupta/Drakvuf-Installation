@@ -248,7 +248,7 @@ The output will show something like this.
 
 ```bash
   bridge name     bridge id               STP enabled     interfaces
-  xenbr0          8000.4ccc6ad1847d       no              enp2s0
+  virbr0          8000.4ccc6ad1847d       yes              virbr0-nic
 ```
 
 The networking service can now be set to start automatically whenever the system is rebooted. Please review the installation instructions once again if you are having trouble getting this type of output.
