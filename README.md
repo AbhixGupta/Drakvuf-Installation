@@ -148,6 +148,12 @@ Note: Before creating physical volume (PV), Go inside Disk partition and create 
 
 Create physical volume. Hera "sda" is disk volume, it can vary accordingly.
 
+List the empty disk using the following command:
+
+```bash
+  lsblk
+```
+
 ```bash
   pvcreate /dev/sda2
 ```
