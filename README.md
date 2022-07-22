@@ -146,13 +146,13 @@ First install the lvm2
 
 Note: Before creating physical volume (PV), Go inside Disk partition and create a volume. Never give the whole path of disk like /dev/sda otherwise your os will be crashed down. So when you will create a volume then it has named like /dev/sd2 or /dev/sd3 and so on. So pick only a free volume then move ahead.
 
-Create physical volume. Hera "sda" is disk volume, it can vary accordingly.
-
 List the empty disk using the following command:
 
 ```bash
   lsblk
 ```
+
+Create physical volume. Hera "sda" is disk volume, it can vary accordingly.
 
 ```bash
   pvcreate /dev/sda2
