@@ -235,7 +235,7 @@ Now turn on the network bridge service.
 ```bash
   $sudo gedit /etc/NetworkManager/NetworkManager.conf
   manages = true  //make true from false
-  $service netwrok-manager restart
+  $service network-manager restart
 ```
 
 To show network Vm interfaces.
