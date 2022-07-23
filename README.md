@@ -487,6 +487,7 @@ When the Windows Installation is finished, follow the following step.
 1. Create a partition of 50G. (A seperate Disk drive)
 2. Turn all the firewall off.
 3. Create a restore point using the newely created partitoin (new drive) // Serach for “create a restore point” in windows start menu.
+4. Goto My Computer --> Right click on new volume you have created --> Security --> provide the full control to all the users.
 
 ## Program Execution Tracing Log Generation using Drakvuf
 
