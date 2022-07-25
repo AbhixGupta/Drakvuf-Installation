@@ -499,6 +499,14 @@ When the Windows Installation is finished, follow the following step.
 3. Create a restore point using the newely created partitoin (new drive) // Serach for “create a restore point” in windows start menu.
 4. Goto My Computer --> Right click on new volume you have created --> Security --> provide the full control to all the users.
 
+![Installation](/images/restore1.png)
+
+![Installation](/images/restore2.png)
+
+![Installation](/images/window1.png)
+
+![Installation](/images/window2.png)
+
 ## Program Execution Tracing Log Generation using Drakvuf
 
 - System tracing:
