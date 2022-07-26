@@ -30,6 +30,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 ![Installation](/images/4.png)
 
 - Now create the swap space, efi space and the main system space for DOM0 XEN installation.
+  Note: While allocating the space for the VM or LVM make sure you will not mount that partition.
 
 ![Installation](/images/7.png)
 
