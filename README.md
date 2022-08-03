@@ -152,7 +152,7 @@ Domain-0                                       0  4096     2       r-----    614
 First install the lvm2
 
 ```bash
-  sudo apt-get install lvm2 -y
+sudo apt-get install lvm2 -y
 ```
 
 Note: Before creating physical volume (PV), Go inside Disk partition and create a volume. Never give the whole path of disk like /dev/sda otherwise your os will be crashed down. So when you will create a volume then it has named like /dev/sd2 or /dev/sd3 and so on. So pick only a free volume then move ahead.
@@ -160,13 +160,13 @@ Note: Before creating physical volume (PV), Go inside Disk partition and create 
 List the empty disk using the following command:
 
 ```bash
-  lsblk
+lsblk
 ```
 
 Create physical volume. Hera "sda" is disk volume, it can vary accordingly.
 
 ```bash
-  pvcreate /dev/sda2
+pvcreate /dev/sda2
 ```
 
 Create one volume Group.
@@ -222,15 +222,15 @@ Note: Change according to your network interface (run “ifconfig”).
 Copy the following text and paste it in the interfaces files.
 
 ```bash
-  auto lo
-  iface lo inet loopback
+auto lo
+iface lo inet loopback
 
-  auto enp1s0
-  iface enp1s0 inet manual
+auto enp1s0
+iface enp1s0 inet manual
 
-  auto virbr0
-  iface virbr0 inet dhcp
-       bridge_ports enp1s0
+auto virbr0
+iface virbr0 inet dhcp
+     bridge_ports enp1s0
 ```
 
 Make sure to add the bridge stanza, be sure to change dhcp to manual in the iface eth0 inet manual line, so that IP (Layer 3) is assigned to the bridge, not the interface. The interface will provide the physical and data-link layers (Layers 1 & 2) only.
@@ -238,28 +238,28 @@ Make sure to add the bridge stanza, be sure to change dhcp to manual in the ifac
 Restart the Networking service.
 
 ```bash
-  sudo service network-manager restart
+sudo service network-manager restart
 ```
 
 Now turn on the network bridge service.
 
 ```bash
-  $sudo gedit /etc/NetworkManager/NetworkManager.conf
-  manages = true  //make true from false
-  $service network-manager restart
+$sudo gedit /etc/NetworkManager/NetworkManager.conf
+manages = true//make true from false
+$service network-manager restart
 ```
 
 To show network Vm interfaces.
 
 ```bash
-  brctl show
+brctl show
 ```
 
 The output will show something like this.
 
 ```bash
-  bridge name     bridge id               STP enabled     interfaces
-  virbr0          8000.4ccc6ad1847d       yes              virbr0-nic
+bridge name     bridge id               STP enabled     interfaces
+virbr0          8000.4ccc6ad1847d       yes              virbr0-nic
 ```
 
 The networking service can now be set to start automatically whenever the system is rebooted. Please review the installation instructions once again if you are having trouble getting this type of output.
@@ -273,37 +273,37 @@ Before proceeding furthur we need 64-bit windows 7 iso image. You can download f
 Next step is to edit the xen VM's configuration file.
 
 ```bash
-  $ sudo gedit /etc/xen/win7.cfg
+$ sudo gedit /etc/xen/win7.cfg
 ```
 
 This template is used for creating the Configurtion for Windows 7 VM from the download ISO file. You can modify the number of cpu, max memory, VM behaviour and other system tuning.
 s
 
 ```bash
-  rch = 'x86_64'
-  name = "windows7-sp1"
-  maxmem = 3000
-  memory = 3000
-  vcpus = 2
-  maxvcpus = 2
-  builder = "hvm"
-  boot = "cd"
-  hap = 1
-  on_poweroff = "destroy"
-  on_reboot = "destroy"
-  on_crash = "destroy"
-  vnc = 1
-  vnclisten = "0.0.0.0"
-  vga = "stdvga"
-  usb = 1
-  usbdevice = "tablet"
-  audio = 1
-  soundhw = "hda"
-  viridian = 1
-  altp2m = 2
-  shadow_memory = 32
-  vif = [ 'type=ioemu,model=e1000,bridge=virbr0,mac=48:9e:bd:9e:2b:0d']
-  disk = [ 'phy:/dev/vg/windows7-sp1,hda,w', 'file:/home/pc-1/Downloads/windows7.iso,hdc:cdrom,r' ]
+rch = 'x86_64'
+name = "windows7-sp1"
+maxmem = 3000
+memory = 3000
+vcpus = 2
+maxvcpus = 2
+builder = "hvm"
+boot = "cd"
+hap = 1
+on_poweroff = "destroy"
+on_reboot = "destroy"
+on_crash = "destroy"
+vnc = 1
+vnclisten = "0.0.0.0"
+vga = "stdvga"
+usb = 1
+usbdevice = "tablet"
+audio = 1
+soundhw = "hda"
+viridian = 1
+altp2m = 2
+shadow_memory = 32
+vif = [ 'type=ioemu,model=e1000,bridge=virbr0,mac=48:9e:bd:9e:2b:0d']
+disk = [ 'phy:/dev/vg/windows7-sp1,hda,w', 'file:/home/pc-1/Downloads/windows7.iso,hdc:cdrom,r' ]
 ```
 
 Note: Make changes according to your file path of windows iso image and mac address.
@@ -313,15 +313,15 @@ Note: Make changes according to your file path of windows iso image and mac addr
 Now, Enter into the LibVMI folder and build it.
 
 ```bash
-  cd ~/drakvuf/libvmi
-  autoreconf -vif
-  ./configure --disable-kvm --disable-bareflank --disable-file
+cd ~/drakvuf/libvmi
+autoreconf -vif
+./configure --disable-kvm --disable-bareflank --disable-file
 ```
 
 Output of the above command should look something this:
 
 ```bash
-  Feature         | Option
+Feature         | Option
 ----------------|---------------------------
 Xen Support     | --enable-xen=yes
 KVM Support     | --enable-kvm=no
@@ -345,35 +345,35 @@ VMIFS           | --enable-vmifs=yes        | yes
 Build and install LibVMI
 
 ```bash
-  make
-  sudo make install
-  sudo echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> ~/.bashrc
+make
+sudo make install
+sudo echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> ~/.bashrc
 ```
 
 Other commands to run:
 
 ```bash
-  cd ~/drakvuf/libvmi
-  ./autogen.sh
-  ./configure –disable-kvm
-  sudo xl list
+cd ~/drakvuf/libvmi
+./autogen.sh
+./configure –disable-kvm
+sudo xl list
 ```
 
 ## Clone Volatility and Installation
 
 ```bash
-  cd ~/drakvuf/volatility3
-  python3 ./setup.py build
-  sudo python3 ./setup.py install
+cd ~/drakvuf/volatility3
+python3 ./setup.py build
+sudo python3 ./setup.py install
 ```
 
 Rekall Installation.
 
 ```bash
-  cd ~/drakvuf/rekall/rekall-core
-  sudo pip install setuptools
-  python setup.py build
-  sudo python setup.py install
+cd ~/drakvuf/rekall/rekall-core
+sudo pip install setuptools
+python setup.py build
+sudo python setup.py install
 ```
 
 ## Create VM and Configure VM from DOM0
@@ -381,13 +381,13 @@ Rekall Installation.
 Last step of this configuration is to create Windows 7 VM using the following command.
 
 ```bash
-  xl create /etc/xen/win7.cfg
+xl create /etc/xen/win7.cfg
 ```
 
 In order to login into the virtual machine you have created, you first have to install the "gvncviewer".
 
 ```bash
-  sudo apt install gvncviewer
+sudo apt install gvncviewer
 ```
 
 ## JSON File Creation using LibVMI vmi-win-guid tool and Volatility Framework
@@ -395,7 +395,7 @@ In order to login into the virtual machine you have created, you first have to i
 Now we will create the JSON configuration file for the Windows domain. First, we need to get the debug information for the Windows kernel via the LibVMI vmi-win-guid tool. For example, in the following my domain is named windows7-sp1.
 
 ```bash
-  $ sudo xl list
+$ sudo xl list
 Name                                        ID   Mem VCPUs	State	Time(s)
 Domain-0                                     0  4024     4     r-----     848.8
 windows7-sp1-x86                             7  3000     1     -b----      94.7
@@ -404,55 +404,55 @@ windows7-sp1-x86                             7  3000     1     -b----      94.7
 Get the debug information.
 
 ```bash
-  $ sudo vmi-win-guid name windows7-sp1-x86
-  Windows Kernel found @ 0x2604000
-    Version: 32-bit Windows 7
-    PE GUID: 4ce78a09412000
-    PDB GUID: 684da42a30cc450f81c535b4d18944b12
-    Kernel filename: ntkrpamp.pdb
-    Multi-processor with PAE (version 5.0 and higher)
-    Signature: 17744.
-    Machine: 332.
-    # of sections: 22.
-     # of symbols: 0.
-    Timestamp: 1290242569.
-    Characteristics: 290.
-    Optional header size: 224.
-    Optional header type: 0x10b
-    Section 1: .text
-    Section 2: _PAGELK
-    Section 3: POOLMI
-    Section 4: POOLCODE
-    Section 5: .data
-    Section 6: ALMOSTRO
-    Section 7: SPINLOCK
-    Section 8: PAGE
-    Section 9: PAGELK
-    Section 10: PAGEKD
-    Section 11: PAGEVRFY
-    Section 12: PAGEHDLS
-    Section 13: PAGEBGFX
-    Section 14: PAGEVRFB
-    Section 15: .edata
-    Section 16: PAGEDATA
-    Section 17: PAGEKDD
-    Section 18: PAGEVRFC
-    Section 19: PAGEVRFD
-    Section 20: INIT
-    Section 21: .rsrc
-    Section 22: .reloc
+$ sudo vmi-win-guid name windows7-sp1-x86
+Windows Kernel found @ 0x2604000
+  Version: 32-bit Windows 7
+  PE GUID: 4ce78a09412000
+  PDB GUID: 684da42a30cc450f81c535b4d18944b12
+  Kernel filename: ntkrpamp.pdb
+  Multi-processor with PAE (version 5.0 and higher)
+  Signature: 17744.
+  Machine: 332.
+  # of sections: 22.
+    # of symbols: 0.
+  Timestamp: 1290242569.
+  Characteristics: 290.
+  Optional header size: 224.
+  Optional header type: 0x10b
+  Section 1: .text
+  Section 2: _PAGELK
+  Section 3: POOLMI
+  Section 4: POOLCODE
+  Section 5: .data
+  Section 6: ALMOSTRO
+  Section 7: SPINLOCK
+  Section 8: PAGE
+  Section 9: PAGELK
+  Section 10: PAGEKD
+  Section 11: PAGEVRFY
+  Section 12: PAGEHDLS
+  Section 13: PAGEBGFX
+  Section 14: PAGEVRFB
+  Section 15: .edata
+  Section 16: PAGEDATA
+  Section 17: PAGEKDD
+  Section 18: PAGEVRFC
+  Section 19: PAGEVRFD
+  Section 20: INIT
+  Section 21: .rsrc
+  Section 22: .reloc
 ```
 
 Note: If found error in running the above commands, run following command then rerun the above command.
 
 ```bash
-  sudo /sbin/ldconfig -v
+sudo /sbin/ldconfig -v
 ```
 
 Copy the following string from the terminal output
 
 ```bash
-  PDB GUID: f794d83b0f3c4b7980797437dc4be9e71
+PDB GUID: f794d83b0f3c4b7980797437dc4be9e71
 	Kernel filename: ntkrnlmp.pdb
 ```
 
@@ -460,37 +460,37 @@ Now run the following commands from the by changing the paramater accordingly to
 
 ```bash
 cd /tmp
-  python3 ~/drakvuf/volatility3/volatility/framework/symbols/windows/pdbconv.py --guid f794d83b0f3c4b7980797437dc4be9e71 -p ntkrnlmp.pdb -o windows7-sp1.json
-  sudo mv windows7-sp1.json /root
+python3 ~/drakvuf/volatility3/volatility/framework/symbols/windows/pdbconv.py --guid f794d83b0f3c4b7980797437dc4be9e71 -p ntkrnlmp.pdb -o windows7-sp1.json
+sudo mv windows7-sp1.json /root
 ```
 
 Now generate the reakall profile.
 
 ```bash
-  sudo su
-  printf "windows7-sp1 {\n\tvolatility_ist = \"/root/windows7-sp1.json\";\n}" >> /etc/libvmi.conf
-  exit
+sudo su
+printf "windows7-sp1 {\n\tvolatility_ist = \"/root/windows7-sp1.json\";\n}" >> /etc/libvmi.conf
+exit
 ```
 
 Now build the drakvuf using the following commands
 
 ```bash
-  cd ~/drakvuf
-  autoreconf -vi
-  ./configure
-  make
+cd ~/drakvuf
+autoreconf -vi
+./configure
+make
 ```
 
 Run the following to get the PID's of the processes.
 
 ```bash
-  sudo vmi-process-list windows7-sp1
+sudo vmi-process-list windows7-sp1
 ```
 
 Now login to Virtual Machine and install the windows with giving it login password.
 
 ```bash
-  gvncviewer localhost
+gvncviewer localhost
 ```
 
 When the Windows Installation is finished, follow the following step.
@@ -513,7 +513,7 @@ When the Windows Installation is finished, follow the following step.
 - System tracing:
 
 ```bash
-  sudo ./src/drakvuf -r /root/windows7-sp1.json -d id
+sudo ./src/drakvuf -r /root/windows7-sp1.json -d id
 ```
 
 Here, id of virtual machine (use sudo xl list command)
@@ -521,7 +521,7 @@ Here, id of virtual machine (use sudo xl list command)
 - Malware Tracing Command
 
 ```bash
-  sudo ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” > zbot_1.txt
+sudo ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” > zbot_1.txt
 ```
 
 Here,
@@ -534,8 +534,8 @@ zbot_1.txt= Location of the output file. By default is drakvuf location.
 - Network Tracing
 
 ```bash
-  ping -n 10000 www.google.com  (from cmd of VM)
-  sudo tcpdump -w "zbot_1.pcap" -i vif1.0-emu   (can be obtained from brctl show)
+ping -n 10000 www.google.com(from cmd of VM)
+sudo tcpdump -w "zbot_1.pcap" -i vif1.0-emu   (can be obtained from brctl show)
 ```
 
 #### Other Commmands
@@ -543,51 +543,51 @@ zbot_1.txt= Location of the output file. By default is drakvuf location.
 Xen version:
 
 ```bash
-  sudo xen-detect
+sudo xen-detect
 ```
 
 List of VMs:
 
 ```bash
-  sudo xl list
+sudo xl list
 ```
 
 Destroy VM:
 
 ```bash
-  sudo xl destroy id
+sudo xl destroy id
 ```
 
 VM boot:
 
 ```bash
-  gvncviewer localhost
+gvncviewer localhost
 ```
 
 CREATE VM:
 
 ```bash
-  sudo xl create /etc/xen/win7.cfg
+sudo xl create /etc/xen/win7.cfg
 ```
 
 Windows json file:
 
 ```bash
-  sudo vmi-win-guid name windows7-sp1
+sudo vmi-win-guid name windows7-sp1
 ```
 
 VMI process list:
 
 ```bash
-  sudo vmi-process-list windows7-sp1
+sudo vmi-process-list windows7-sp1
 ```
 
 Enabling the debug:
 
 ```bash
-  make clean
-  ./configure --enable-debug
-  make
+make clean
+./configure --enable-debug
+make
 ```
 
 Debug output: (With process injection)
