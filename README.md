@@ -90,7 +90,7 @@ make -j4 debball
 
 ## XEN Installation
 
-Now we have to install Xen with dom0 getting 4GB RAM assigned and two dedicated CPU cores. You can modify these configuration according to your need. At last update the Grub and reboot the system.
+Now we have to install "Xen" with dom0 getting 4GB RAM assigned and two dedicated CPU cores. You can modify these configuration according to your need. At last update the Grub and reboot the system.
 
 ```bash
 sudo su
