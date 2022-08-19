@@ -121,7 +121,7 @@ cd /etc/grub.d/;
 mv 20_linux_xen 09_linux_xen
 ```
 
-Update the changes in the Grub and reboot the system.
+Update the changes in the Grub and then reboot the system.
 
 ```bash
 update-grub
