@@ -55,20 +55,20 @@ These commands works fine with Debian based linux distro. We have used the Ubunt
 First Update your linux system:
 
 ```bash
-sudou apt update
-sudou apt udgrade -y
+sudo apt update
+sudo apt udgrade -y
 ```
 
 Now install the required Dependencies.
 
 ```bash
-sudou apt-get install wget git bcc bin86 gawk bridge-utils iproute2 libcurl4-openssl-dev bzip2 libpci-dev build-essential make gcc clang libc6-dev linux-libc-dev zlib1g-dev libncurses5-dev patch libvncserver-dev libssl-dev libsdl-dev iasl libbz2-dev e2fslibs-dev git-core uuid-dev ocaml libx11-dev bison flex ocaml-findlib xz-utils gettext libyajl-dev libpixman-1-dev libaio-dev libfdt-dev cabextract libglib2.0-dev autoconf automake libtool libjson-c-dev libfuse-dev liblzma-dev autoconf-archive kpartx python3-dev python3-pip golang python-dev libsystemd-dev nasm -y
+sudo apt-get install wget git bcc bin86 gawk bridge-utils iproute2 libcurl4-openssl-dev bzip2 libpci-dev build-essential make gcc clang libc6-dev linux-libc-dev zlib1g-dev libncurses5-dev patch libvncserver-dev libssl-dev libsdl-dev iasl libbz2-dev e2fslibs-dev git-core uuid-dev ocaml libx11-dev bison flex ocaml-findlib xz-utils gettext libyajl-dev libpixman-1-dev libaio-dev libfdt-dev cabextract libglib2.0-dev autoconf automake libtool libjson-c-dev libfuse-dev liblzma-dev autoconf-archive kpartx python3-dev python3-pip golang python-dev libsystemd-dev nasm -y
 ```
 
 pip3 command is used to install those dependency packages which old and cannot be installed from apt command.
 
 ```bash
-sudou pip3 install pefile construct
+sudo pip3 install pefile construct
 ```
 
 ## Cloning of Drakvuf from Official repository
@@ -83,7 +83,7 @@ git submodule update --init
 cd xen
 ./configure --enable-githttp --enable-systemd --enable-ovmf --disable-pvshim
 make -j4 dist-xen
-sudou apt-get install -y ninja-build
+sudo apt-get install -y ninja-build
 make -j4 dist-tools
 make -j4 debball
 ```
@@ -93,7 +93,7 @@ make -j4 debball
 Now we have to install "Xen" with dom0 getting 4GB RAM assigned and two dedicated CPU cores. You can modify these configuration according to your need. At last update the Grub and reboot the system.
 
 ```bash
-sudou su
+sudo su
 apt-get remove xen* libxen*
 dpkg -i dist/xen*.deb
 echo "GRUB_CMDLINE_XEN_DEFAULT=\"dom0_mem=4096M,max:4096M dom0_max_vcpus=4 dom0_vcpus_pin=1 force-ept=1 ept=ad=0 hap_1gb=0 hap_2mb=0 altp2m=1 hpet=legacy-replacement smt=0\"" >> /etc/default/grub
@@ -131,13 +131,13 @@ reboot
 Verify the XEN installation. The output will show the "Running in PV context on Xen v4.7" message on the screen
 
 ```
-sudou xen-detect
+sudo xen-detect
 ```
 
 This command will list the running VM.
 
 ```bash
-sudou xl list
+sudo xl list
 ```
 
 The output should have to be similar to this.
@@ -152,7 +152,7 @@ Domain-0                                       0  4096     2       r-----    614
 First install the lvm2
 
 ```bash
-sudou apt-get install lvm2 -y
+sudo apt-get install lvm2 -y
 ```
 
 Note: Before creating physical volume (PV), Go inside Disk partition and create a volume. Never give the whole path of disk like /dev/sda otherwise your os will be crashed down. So when you will create a volume then it has named like /dev/sd2 or /dev/sd3 and so on. So pick only a free volume then move ahead.
@@ -194,17 +194,17 @@ Next we need to set up our system so that we can attach virtual machines to the 
 The piece of software we use to do this is called the Linux bridge and its core components reside inside the Linux kernel. In this case, the bridge acts as our virtual switch. The Debian kernel is compiled with the Linux bridging module so all we need to do is install the control utilities:
 
 ```bash
-$sudou apt-get install bridge-utils
+$sudo apt-get install bridge-utils
 ```
 
 Management of the bridge is usually done using the brctl command. The initial setup for our Xen bridge, though, is a "set it once and forget it" kind of thing, so we are instead going to configure our bridge through Debian’s networking infrastructure. It can be configured via /etc/network/interfaces.
 
 Open this file with the editor of your choice. If you selected a minimal installation, the nano text editor should already be installed. Open the file:
 
-Note: nano is a text file editor for linux. You can also use the vi, vim editor also. If command show error then run "sudou apt install nano -y"
+Note: nano is a text file editor for linux. You can also use the vi, vim editor also. If command show error then run "sudo apt install nano -y"
 
 ```bash
-$sudou nano /etc/network/interfaces      //open the interface file
+$sudo nano /etc/network/interfaces      //open the interface file
 ```
 
 This file is very simple. Each stanza represents a single interface.
@@ -238,13 +238,13 @@ Make sure to add the bridge stanza, be sure to change dhcp to manual in the ifac
 Restart the Networking service.
 
 ```bash
-sudou service network-manager restart
+sudo service network-manager restart
 ```
 
 Now turn on the network bridge service.
 
 ```bash
-$sudou gedit /etc/NetworkManager/NetworkManager.conf
+$sudo gedit /etc/NetworkManager/NetworkManager.conf
 manages = true//make true from false
 $service network-manager restart
 ```
@@ -273,7 +273,7 @@ Before proceeding furthur we need 64-bit windows 7 iso image. You can download f
 Next step is to edit the xen VM's configuration file.
 
 ```bash
-$ sudou gedit /etc/xen/win7.cfg
+$ sudo gedit /etc/xen/win7.cfg
 ```
 
 This template is used for creating the Configurtion for Windows 7 VM from the download ISO file. You can modify the number of cpu, max memory, VM behaviour and other system tuning.
@@ -346,8 +346,8 @@ Build and install LibVMI
 
 ```bash
 make
-sudou make install
-sudou echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> ~/.bashrc
+sudo make install
+sudo echo "export LD_LIBRARY_PATH=\$LD_LIBRARY_PATH:/usr/local/lib" >> ~/.bashrc
 ```
 
 Other commands to run:
@@ -356,7 +356,7 @@ Other commands to run:
 cd ~/drakvuf/libvmi
 ./autogen.sh
 ./configure –disable-kvm
-sudou xl list
+sudo xl list
 ```
 
 ## Clone Volatility and Installation
@@ -364,16 +364,16 @@ sudou xl list
 ```bash
 cd ~/drakvuf/volatility3
 python3 ./setup.py build
-sudou python3 ./setup.py install
+sudo python3 ./setup.py install
 ```
 
 Rekall Installation.
 
 ```bash
 cd ~/drakvuf/rekall/rekall-core
-sudou pip install setuptools
+sudo pip install setuptools
 python setup.py build
-sudou python setup.py install
+sudo python setup.py install
 ```
 
 ## Create VM and Configure VM from DOM0
@@ -387,7 +387,7 @@ xl create /etc/xen/win7.cfg
 In order to login into the virtual machine you have created, you first have to install the "gvncviewer".
 
 ```bash
-sudou apt install gvncviewer
+sudo apt install gvncviewer
 ```
 
 ## JSON File Creation using LibVMI vmi-win-guid tool and Volatility Framework
@@ -395,7 +395,7 @@ sudou apt install gvncviewer
 Now we will create the JSON configuration file for the Windows domain. First, we need to get the debug information for the Windows kernel via the LibVMI vmi-win-guid tool. For example, in the following my domain is named windows7-sp1.
 
 ```bash
-$ sudou xl list
+$ sudo xl list
 Name                                        ID   Mem VCPUs	State	Time(s)
 Domain-0                                     0  4024     4     r-----     848.8
 windows7-sp1-x86                             7  3000     1     -b----      94.7
@@ -404,7 +404,7 @@ windows7-sp1-x86                             7  3000     1     -b----      94.7
 Get the debug information.
 
 ```bash
-$ sudou vmi-win-guid name windows7-sp1-x86
+$ sudo vmi-win-guid name windows7-sp1-x86
 Windows Kernel found @ 0x2604000
   Version: 32-bit Windows 7
   PE GUID: 4ce78a09412000
@@ -446,7 +446,7 @@ Windows Kernel found @ 0x2604000
 Note: If found error in running the above commands, run following command then rerun the above command.
 
 ```bash
-sudou /sbin/ldconfig -v
+sudo /sbin/ldconfig -v
 ```
 
 Copy the following string from the terminal output
@@ -461,13 +461,13 @@ Now run the following commands from the by changing the paramater accordingly to
 ```bash
 cd /tmp
 python3 ~/drakvuf/volatility3/volatility/framework/symbols/windows/pdbconv.py --guid f794d83b0f3c4b7980797437dc4be9e71 -p ntkrnlmp.pdb -o windows7-sp1.json
-sudou mv windows7-sp1.json /root
+sudo mv windows7-sp1.json /root
 ```
 
 Now generate the reakall profile.
 
 ```bash
-sudou su
+sudo su
 printf "windows7-sp1 {\n\tvolatility_ist = \"/root/windows7-sp1.json\";\n}" >> /etc/libvmi.conf
 exit
 ```
@@ -484,7 +484,7 @@ make
 Run the following to get the PID's of the processes.
 
 ```bash
-sudou vmi-process-list windows7-sp1
+sudo vmi-process-list windows7-sp1
 ```
 
 Now login to Virtual Machine and install the windows with giving it login password.
@@ -513,21 +513,21 @@ When the Windows Installation is finished, follow the following step.
 - System tracing:
 
 ```bash
-sudou ./src/drakvuf -r /root/windows7-sp1.json -d id
+sudo ./src/drakvuf -r /root/windows7-sp1.json -d id
 ```
 
-Here, id of virtual machine (use sudou xl list command)
+Here, id of virtual machine (use sudo xl list command)
 
 - Malware Tracing Command
 
 ```bash
-sudou ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” > zbot_1.txt
+sudo ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” > zbot_1.txt
 ```
 
 Here,
 
 1300 = change according to pid of explorer.exe
-1= id of virtual machine (use sudou xl list command)
+1= id of virtual machine (use sudo xl list command)
 “E:\\zbot\\zbot_1.exe”= Location of malware ".exe" file in the created windows VM.
 zbot_1.txt= Location of the output file. By default is drakvuf location.
 
@@ -535,7 +535,7 @@ zbot_1.txt= Location of the output file. By default is drakvuf location.
 
 ```bash
 ping -n 10000 www.google.com(from cmd of VM)
-sudou tcpdump -w "zbot_1.pcap" -i vif1.0-emu   (can be obtained from brctl show)
+sudo tcpdump -w "zbot_1.pcap" -i vif1.0-emu   (can be obtained from brctl show)
 ```
 
 #### Other Commmands
@@ -543,19 +543,19 @@ sudou tcpdump -w "zbot_1.pcap" -i vif1.0-emu   (can be obtained from brctl show)
 Xen version:
 
 ```bash
-sudou xen-detect
+sudo xen-detect
 ```
 
 List of VMs:
 
 ```bash
-sudou xl list
+sudo xl list
 ```
 
 Destroy VM:
 
 ```bash
-sudou xl destroy id
+sudo xl destroy id
 ```
 
 VM boot:
@@ -567,19 +567,19 @@ gvncviewer localhost
 CREATE VM:
 
 ```bash
-sudou xl create /etc/xen/win7.cfg
+sudo xl create /etc/xen/win7.cfg
 ```
 
 Windows json file:
 
 ```bash
-sudou vmi-win-guid name windows7-sp1
+sudo vmi-win-guid name windows7-sp1
 ```
 
 VMI process list:
 
 ```bash
-sudou vmi-process-list windows7-sp1
+sudo vmi-process-list windows7-sp1
 ```
 
 Enabling the debug:
@@ -593,14 +593,14 @@ make
 Debug output: (With process injection)
 
 ```bash
-sudou ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” -v 1> zbot_1.txt
+sudo ./src/drakvuf -r /root/windows7-sp1.json -d 1 -x socketmon -t 120 -i 1300 -e “E:\\zbot\\zbot_1.exe” -v 1> zbot_1.txt
 ```
 
 Note: Retype all the quotes from the keyboard in the terminal before running the command
 Here,
 
 1300 = change according to pid of explorer.exe
-1= id of virtual machine (use sudou xl list command)
+1= id of virtual machine (use sudo xl list command)
 
 ## Trobleshoot
 
