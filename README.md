@@ -194,7 +194,7 @@ Next we need to set up our system so that we can attach virtual machines to the 
 The piece of software we use to do this is called the Linux bridge and its core components reside inside the Linux kernel. In this case, the bridge acts as our virtual switch. The Debian kernel is compiled with the Linux bridging module so all we need to do is install the control utilities:
 
 ```bash
-$sudo apt-get install bridge-utils
+$ sudo apt-get install bridge-utils
 ```
 
 Management of the bridge is usually done using the brctl command. The initial setup for our Xen bridge, though, is a "set it once and forget it" kind of thing, so we are instead going to configure our bridge through Debian’s networking infrastructure. It can be configured via /etc/network/interfaces.
@@ -204,7 +204,7 @@ Open this file with the editor of your choice. If you selected a minimal install
 Note: nano is a text file editor for linux. You can also use the vi, vim editor also. If command show error then run "sudo apt install nano -y"
 
 ```bash
-$sudo nano /etc/network/interfaces      //open the interface file
+$ sudo nano /etc/network/interfaces      //open the interface file
 ```
 
 This file is very simple. Each stanza represents a single interface.
@@ -244,9 +244,9 @@ sudo service network-manager restart
 Now turn on the network bridge service.
 
 ```bash
-$sudo gedit /etc/NetworkManager/NetworkManager.conf
+$ sudo gedit /etc/NetworkManager/NetworkManager.conf
 manages = true//make true from false
-$service network-manager restart
+$ service network-manager restart
 ```
 
 To show network Vm interfaces.
@@ -280,7 +280,7 @@ This template is used for creating the Configurtion for Windows 7 VM from the do
 s
 
 ```bash
-rch = 'x86_64'
+arch = 'x86_64'
 name = "windows7-sp1"
 maxmem = 3000
 memory = 3000
