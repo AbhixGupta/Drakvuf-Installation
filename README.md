@@ -56,7 +56,7 @@ First Update your linux system:
 
 ```bash
 sudo apt update
-sudo apt udgrade -y
+sudo apt upgrade -y
 ```
 
 Now install the required Dependencies.
