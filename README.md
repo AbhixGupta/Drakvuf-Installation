@@ -25,7 +25,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ![Installation](/images/3.png)
 
-- If you already have some installed lvm partition you run the following command to delete it.
+- If you already have something installed lvm partition you run the following command to delete it.
 
 ![Installation](/images/4.png)
 
