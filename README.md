@@ -21,7 +21,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 ![Installation](/images/2.png)
 
-- In Installation type, select the Something else.
+- In Installation type, select the Something else option.
 
 ![Installation](/images/3.png)
 
