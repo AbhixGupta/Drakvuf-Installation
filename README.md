@@ -7,7 +7,7 @@ This repository contains the installation procedure of the Drakvuf, A VMI based 
 Drakvuf is a black box binary dynamic malware analysis tool. It works on the principle of the VMI (Virtual Machine Introspection).
 
 1. Make sure to disable the "Secure Boot" from the BIOS.
-2. While Installating the ubuntu make at least 200 GB space free for LVM group .
+2. While Installating the ubuntu make at least 200 GB space free for LVM group.
 
 ## Installation
 
