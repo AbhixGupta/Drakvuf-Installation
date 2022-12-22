@@ -22,7 +22,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 - Make sure to check all the boxes as per the below image before proceeding furthur. However it not mandatory but still it helps to install the latest verison of software.
 
-![Installation](/images/2.png)
+![Installation](images/2.png)
 
 - In Installation type, select the Something else option.
 
