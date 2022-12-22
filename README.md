@@ -15,7 +15,7 @@ Drakvuf is a black box binary dynamic malware analysis tool. It works on the pri
 
 - Before installing the drakvuf you have to make sure, that partition in the system for the LVM and system space.
 
-![Installation](./images/1.PNG)
+![Installation](.\images\1.PNG)
 
 <!-- <img src="./images/1.png" alt="Installation"> -->
 
